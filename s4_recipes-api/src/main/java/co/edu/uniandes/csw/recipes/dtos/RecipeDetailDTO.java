@@ -5,7 +5,10 @@
  */
 package co.edu.uniandes.csw.recipes.dtos;
 
+import co.edu.uniandes.csw.recipes.entities.IngredientEntity;
 import co.edu.uniandes.csw.recipes.entities.RecipeEntity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,12 +16,27 @@ import co.edu.uniandes.csw.recipes.entities.RecipeEntity;
  */
 public class RecipeDetailDTO extends RecipeDTO {
     
+    private List<IngredientDTO> ingredientes = new ArrayList<IngredientDTO>();
+
+    
     public RecipeDetailDTO(){
     
     }
     
     public RecipeDetailDTO(RecipeEntity entity){
         super(entity);
+        for (IngredientEntity ingrediente : entity.getIngredientes()) {
+            ingredientes.add(new IngredientDTO(ingrediente));
+        }
+    }
+    
+    public RecipeEntity toEntity()
+    {
+       RecipeEntity receta = super.toEntity();
+        for (IngredientDTO ingrediente : ingredientes) {
+            receta.getIngredientes().add(ingrediente.toEntity());
+        }
+        return receta;
     }
     
 }

@@ -27,6 +27,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 @RunWith(Arquillian.class)
 public class RecipePersistenceTest {
+    
     @Inject
     RecipePersistence recipePersistence;
 
@@ -46,6 +47,12 @@ public class RecipePersistenceTest {
     public void createRecipeTest() {
         PodamFactory factory = new PodamFactoryImpl();
         RecipeEntity newEntity = factory.manufacturePojo(RecipeEntity.class);
-        //TODO terminar la prueba         
+        recipePersistence.createRecipe(newEntity);
+        Assert.assertNotNull(recipePersistence.find(newEntity.getId()));
+        Assert.assertEquals(recipePersistence.find(newEntity.getId()), newEntity);
+        Assert.assertNotNull(recipePersistence.find(newEntity.getId()).getIngredientes());
+        
+        Assert.assertTrue(!recipePersistence.find(newEntity.getId()).getIngredientes().isEmpty());
     }
+      
 }

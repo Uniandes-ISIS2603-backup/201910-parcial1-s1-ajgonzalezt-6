@@ -27,10 +27,45 @@ public class RecipePersistence {
     protected EntityManager em;
     
   
+    /*public List<RecipeEntity> find(){
+        return em.find(RecipeEntity.class);
+    }*/
+    
+    
+    public RecipeEntity findByName(String name) {
+        // Se crea un query para buscar editoriales con el nombre que recibe el método como argumento. ":name" es un placeholder que debe ser remplazado
+        TypedQuery query = em.createQuery("Select e From RecipeEntity e where e.name = :name", RecipeEntity.class);
+        // Se remplaza el placeholder ":name" con el valor del argumento 
+        query = query.setParameter("name", name);
+        // Se invoca el query se obtiene la lista resultado
+        List<RecipeEntity> sameName = query.getResultList();
+        RecipeEntity result;
+        if (sameName == null) {
+            result = null;
+        } else if (sameName.isEmpty()) {
+            result = null;
+        } else {
+            result = sameName.get(0);
+        }
+        LOGGER.log(Level.INFO, "Saliendo de consultar editorial por nombre ", name);
+        return result;
+    }
+    
     public RecipeEntity find(Long id) {
         return em.find(RecipeEntity.class, id);
     }
     
     //TODO método crear de recipe
-
+    public RecipeEntity createRecipe(RecipeEntity recetaSave)
+    {
+        em.persist(recetaSave);
+         return  recetaSave;
+    }
+    
+    public RecipeEntity createRecipeSinIng(RecipeEntity recetaSave)
+    {
+        
+        em.persist(recetaSave);
+         return  recetaSave;
+    }
 }
